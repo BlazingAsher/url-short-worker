@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "url-short-worker",
+  "version": "1.0.0",
+  "description": "A URL shortener that runs on Cloudflare workers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Hui <opensource@davidhui.ca>",
+  "license": "MIT"
+}
