@@ -23,7 +23,7 @@ async function authorize(request, cb) {
 
 function retrievePath(url) {
   // substring to get rid of /g/, change the 3 to 1 if you are running at the root
-  let path = new URL(request.url).pathname.substring(3);
+  let path = new URL(url).pathname.substring(3);
   return path.charAt(path.length-1) === "/" ? path.substring(0, path.length - 1) : path;
 }
 
