@@ -21,14 +21,14 @@ async function authorize(request, cb) {
     return cb(request);
 }
 
-async function handleResolveRequest(request) {
-  // substring to get rid of /g/
+function retrievePath(url) {
+  // substring to get rid of /g/, change the 3 to 1 if you are running at the root
   let path = new URL(request.url).pathname.substring(3);
-  console.log(request.headers['user-agent'], new Date(), path);
+  return path.charAt(path.length-1) === "/" ? path.substring(0, path.length - 1) : path;
+}
 
-  if(path.charAt(path.length-1) === "/") {
-    path = path.substring(0, path.length - 1);
-  }
+async function handleResolveRequest(request) {
+  const path = retrievePath(request.url);
 
   const dest = await SHORTURLKV.get("r_" + path);
   if(dest === null) {
@@ -41,11 +41,7 @@ async function handleResolveRequest(request) {
 
 async function handleModifyRequest(request) {
   return authorize(request, async () => {
-    let path = new URL(request.url).pathname.substring(3);
-
-    if(path.charAt(path.length-1) === "/") {
-      path = path.substring(0, path.length - 1);
-    }
+    const path = retrievePath(request.url);
 
     const newInfo = await request.json();
     if(!newInfo["dest"]){
@@ -61,11 +57,7 @@ async function handleModifyRequest(request) {
 
 async function handleDeleteRequest(request) {
   return authorize(request, async () => {
-    let path = new URL(request.url).pathname.substring(3);
-
-    if(path.charAt(path.length-1) === "/") {
-      path = path.substring(0, path.length - 1);
-    }
+    const path = retrievePath(request.url);
 
     await SHORTURLKV.delete("r_" + path);
 
